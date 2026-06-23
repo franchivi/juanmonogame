@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>Juan Mono 🐒🔧</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Baloo+2:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="game-wrap">
+    <canvas id="game"></canvas>
+
+    <!-- ===== Pantalla: Menú ===== -->
+    <div id="menu" class="overlay">
+      <div class="panel">
+        <h1 class="title">JUAN MONO</h1>
+        <p class="subtitle">🐵🔧 El chapero simio saltarín 🔧🐵</p>
+        <button id="btn-start" class="btn btn-primary">▶ JUGAR</button>
+        <button id="btn-help" class="btn btn-secondary">¿Cómo se juega?</button>
+        <div class="record-line">🏆 Récord: <span id="record">0</span></div>
+      </div>
+    </div>
+
+    <!-- ===== Pantalla: Ayuda ===== -->
+    <div id="help" class="overlay hidden">
+      <div class="panel">
+        <h2 class="title-sm">CÓMO JUGAR</h2>
+        <ul class="help-list">
+          <li><b>← →</b> o <b>A / D</b> — Mover a Juan</li>
+          <li><b>Espacio</b> o <b>↑</b> o <b>W</b> — Saltar</li>
+          <li><b>🧴</b> Recoge todos los desodorantes</li>
+          <li><b>🏁</b> Llega a la llave inglesa dorada</li>
+          <li><b>⚠️</b> Evita los barriles rodantes y las caídas</li>
+        </ul>
+        <button id="btn-help-back" class="btn btn-secondary">Volver</button>
+      </div>
+    </div>
+
+    <!-- ===== HUD ===== -->
+    <div id="hud" class="hidden">
+      <div class="hud-item hud-level" id="hud-level">Nivel 1/3</div>
+      <div class="hud-item">🧴 <span id="hud-bananas">0</span>/<span id="hud-total">0</span></div>
+      <div class="hud-item">❤️ <span id="hud-lives">3</span></div>
+      <div class="hud-item">⏱️ <span id="hud-time">0.0</span>s</div>
+    </div>
+
+    <!-- ===== Botones de sonido (siempre visibles) ===== -->
+    <div id="sound-bar">
+      <button id="btn-sfx"  class="sound-btn" title="Efectos de sonido">🔊</button>
+      <button id="btn-music" class="sound-btn" title="Música">🎵</button>
+    </div>
+
+    <!-- ===== Pantalla: Nivel superado ===== -->
+    <div id="leveldone" class="overlay hidden">
+      <div class="panel level-panel">
+        <h2 class="title-sm">¡NIVEL SUPERADO! ✅</h2>
+        <p class="result-line">📍 <span id="ld-level">Nivel 1</span> — <span id="ld-name">El Taller</span></p>
+        <p class="result-line">🧴 Desodorantes: <span id="ld-bananas">0</span>/<span id="ld-total">0</span></p>
+        <p class="result-line">⏱️ Tiempo: <span id="ld-time">0.0</span>s</p>
+        <button id="btn-next-level" class="btn btn-primary">▶ Siguiente nivel</button>
+        <button id="btn-ld-menu" class="btn btn-secondary">↩ Salir al menú</button>
+      </div>
+    </div>
+
+    <!-- ===== Pantalla: Pausa ===== -->
+    <div id="pause" class="overlay hidden">
+      <div class="panel">
+        <h2 class="title-sm">PAUSA</h2>
+        <button id="btn-resume" class="btn btn-primary">▶ Continuar</button>
+        <button id="btn-quit" class="btn btn-secondary">↩ Salir al menú</button>
+      </div>
+    </div>
+
+    <!-- ===== Pantalla: Game Over ===== -->
+    <div id="gameover" class="overlay hidden">
+      <div class="panel">
+        <h2 class="title-sm">¡TE HAS CAÍDO!</h2>
+        <p class="result-line">🧴 Desodorantes: <span id="go-bananas">0</span></p>
+        <p class="result-line">⏱️ Tiempo: <span id="go-time">0.0</span>s</p>
+        <button id="btn-retry" class="btn btn-primary">↻ Reintentar</button>
+        <button id="btn-go-menu" class="btn btn-secondary">↩ Menú</button>
+      </div>
+    </div>
+
+    <!-- ===== Pantalla: Victoria ===== -->
+    <div id="victory" class="overlay hidden">
+      <div class="panel victory-panel">
+        <h2 class="title-sm">¡VICTORIA! 🎉</h2>
+        <p class="result-line">Juan Mono ha terminado la chapa.</p>
+        <p class="result-line">🧴 Desodorantes: <span id="vc-bananas">0</span>/<span id="vc-total">0</span></p>
+        <p class="result-line">⏱️ Tiempo: <span id="vc-time">0.0</span>s</p>
+        <p id="new-record" class="record-line hidden">🏆 ¡NUEVO RÉCORD!</p>
+        <button id="btn-play-again" class="btn btn-primary">↻ Jugar de nuevo</button>
+        <button id="btn-vc-menu" class="btn btn-secondary">↩ Menú</button>
+      </div>
+    </div>
+
+    <!-- ===== Controles táctiles (móvil) ===== -->
+    <div id="touch" class="hidden">
+      <button id="t-left"  class="t-btn">◀</button>
+      <button id="t-right" class="t-btn">▶</button>
+      <button id="t-jump"  class="t-btn t-jump">⤒</button>
+    </div>
+  </div>
+
+  <script src="sound.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
