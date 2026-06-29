@@ -1,5 +1,5 @@
 /* ===========================================================
-   JUAN MONO — Motor de sonido (Web Audio API)
+   REY GORILA COLECTOR — Motor de sonido (Web Audio API)
    Todos los efectos se sintetizan en tiempo real: sin archivos.
    Incluye también una música de fondo alegre (loop sintetizado).
    =========================================================== */
@@ -116,12 +116,11 @@ const sfx = {
     slide(300, 620, 0.18, 'square', 0.22);
   },
 
-  deodorant() {
-    // spray fresco: chasquido + do-re-mi brillante
-    noise(0.06, 0.18, 4000, 'highpass');
-    tone(880, 0.08, 'triangle', 0.25);
-    setTimeout(() => tone(1175, 0.08, 'triangle', 0.25), 60);
-    setTimeout(() => tone(1568, 0.12, 'triangle', 0.25), 120);
+  cartridge() {
+    // coger cartucho NES: pitido alegre 8-bit
+    noise(0.04, 0.14, 3000, 'highpass');
+    tone(988, 0.07, 'square', 0.22);
+    setTimeout(() => tone(1319, 0.09, 'square', 0.22), 70);
   },
 
   stomp() {

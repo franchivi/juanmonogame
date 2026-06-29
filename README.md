@@ -1,6 +1,6 @@
-# Juan Mono 🐒🔧
+# Rey Gorila Colector 🐒👑
 
-Juego de plataformas 2D en HTML5 Canvas.
+Recolecta **todos los cartuchos NES** de cada nivel y llega a la **Estrella NES dorada** para avanzar. ¡Cuidado con los barriles rodantes y las caídas!
 Un chapero con cara de mono recolecta desodorantes por su taller.
 
 Homenaje a un compañero de trabajo.

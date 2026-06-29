@@ -1,6 +1,6 @@
 /* ===========================================================
-   JUAN MONO — Hoja de estilos
-   Estética cartoon: taller de chapero + selva
+   REY GORILA COLECTOR — Hoja de estilos
+   Estética cartoon: jungla/gorila + nostalgia NES
    =========================================================== */
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -107,6 +107,18 @@ html, body {
   color: #6b3410;
   font-weight: 600;
   margin-bottom: 24px;
+}
+
+/* Logo de portada del menú */
+.menu-logo {
+  display: block;
+  margin: 0 auto 18px auto;
+  max-width: 220px;
+  width: 70vw;
+  height: auto;
+  max-height: 140px;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 12px rgba(0,0,0,0.35));
 }
 
 /* ---------- Botones ---------- */

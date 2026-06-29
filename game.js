@@ -1,7 +1,7 @@
 /* ===========================================================
-   JUAN MONO 🐒🔧
+   REY GORILA COLECTOR 🐒👑
    Juego de plataformas 2D en canvas.
-   Un chapero con cara de mono recolecta desodorantes por su taller.
+   Un gorila coleccionista recoge cartuchos de NES por la jungla.
    =========================================================== */
 
 (() => {
@@ -80,14 +80,14 @@ let state = STATE.MENU;
 let level = null;          // datos del nivel activo
 let player = null;
 let enemies = [];
-let items = [];            // desodorantes
+let items = [];            // cartuchos NES
 let particles = [];
 let camera = { x: 0, y: 0 };
 let keys = {};
 let jumpBuffer = 0;
 let coyoteTimer = 0;
 let lives = 3;
-let deodorantsCollected = 0;
+let cartridgesCollected = 0;
 let elapsed = 0;
 let lastTime = 0;
 let goalAnim = 0;
@@ -97,7 +97,7 @@ let currentLevel = 0;       // índice del nivel activo (0-2)
 let totalElapsed = 0;       // tiempo acumulado de toda la partida
 let levelStartTime = 0;     // para calcular tiempo por nivel
 
-let record = parseFloat(localStorage.getItem('juanmono_record')) || Infinity;
+let record = parseFloat(localStorage.getItem('reygorila_record')) || Infinity;
 
 /* ----------------------------------------------------------
    4. Definición de los niveles
@@ -130,7 +130,7 @@ const LEVELS = [
       { x: 2780, y: 270, w: 130, h: 30, type: 'crate' },
       { x: 3000, y: 360, w: 140, h: 30, type: 'crate' },
     ],
-    deodorants: [
+    cartridges: [
       [120,440],[260,440],[400,330],[480,440],
       [600,250],[700,440],[790,320],
       [1220,310],[1320,440],[1420,220],
@@ -185,7 +185,7 @@ const LEVELS = [
       { x: 3480, y: 280, w: 120, h: 30, type: 'crate' },
       { x: 3680, y: 360, w: 140, h: 30, type: 'crate' },
     ],
-    deodorants: [
+    cartridges: [
       [140,440],[340,340],[380,440],
       [520,260],[680,180],[820,440],
       [840,340],[900,440],[1100,320],
@@ -249,7 +249,7 @@ const LEVELS = [
       { x: 3940, y: 260, w: 120, h: 30, type: 'crate' },
       { x: 4160, y: 350, w: 120, h: 30, type: 'crate' },
     ],
-    deodorants: [
+    cartridges: [
       [120,440],[290,340],[430,260],
       [570,180],[720,340],[880,440],
       [900,280],[1040,200],[1220,340],
@@ -277,7 +277,7 @@ const LEVELS = [
 /* Construye un nivel a partir de su índice. */
 function buildLevel(index) {
   const def = LEVELS[index];
-  const items = def.deodorants.map(([x, y]) => ({
+  const items = def.cartridges.map(([x, y]) => ({
     x, y, w: 26, h: 30, collected: false, t: Math.random() * Math.PI * 2,
   }));
   return {
@@ -430,15 +430,15 @@ function update() {
     return;
   }
 
-  // ---- Items (desodorantes) ----
+  // ---- Items (cartuchos NES) ----
   for (const it of items) {
     if (it.collected) continue;
     it.t += dt * 4;
     if (rectsOverlap(player, it)) {
       it.collected = true;
-      deodorantsCollected++;
+      cartridgesCollected++;
       spawnSparkle(it.x + it.w/2, it.y + it.h/2);
-      if (window.JMSound) JMSound.sfx.deodorant();
+      if (window.JMSound) JMSound.sfx.cartridge();
       updateHud();
     }
   }
@@ -472,11 +472,11 @@ function update() {
   // ---- Meta ----
   goalAnim += dt;
   if (rectsOverlap(player, level.goal)) {
-    if (deodorantsCollected >= items.length) {
+    if (cartridgesCollected >= items.length) {
       winGame();
       return;
     } else if (goalMsgTimer <= 0) {
-      goalMsg = `¡Faltan ${items.length - deodorantsCollected} desodorantes!`;
+      goalMsg = `¡Faltan ${items.length - cartridgesCollected} cartuchos NES!`;
       goalMsgTimer = 2.5;
     }
   }
@@ -619,7 +619,7 @@ function draw() {
   drawGoal(level.goal);
 
   // Items
-  for (const it of items) if (!it.collected) drawDeodorant(it);
+  for (const it of items) if (!it.collected) drawCartridge(it);
 
   // Enemigos
   for (const e of enemies) if (e.alive) drawBarrel(e);
@@ -872,8 +872,8 @@ function drawPlatform(pl) {
   }
 }
 
-/* ---- Desodorante ---- */
-function drawDeodorant(it) {
+/* ---- Cartucho NES ---- */
+function drawCartridge(it) {
   const cx = it.x + it.w/2;
   const cy = it.y + it.h/2 + Math.sin(it.t)*4;
   ctx.save();
@@ -942,7 +942,28 @@ function drawBarrel(e) {
   ctx.restore();
 }
 
-/* ---- Meta: llave inglesa dorada ---- */
+function drawStar(cx, cy, outerR, innerR, points, fill, stroke) {
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.beginPath();
+  for (let i = 0; i < points * 2; i++) {
+    const r = i % 2 === 0 ? outerR : innerR;
+    const ang = (i / (points * 2)) * Math.PI * 2 - Math.PI / 2;
+    const x = Math.cos(ang) * r;
+    const y = Math.sin(ang) * r;
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  }
+  ctx.closePath();
+  ctx.fillStyle = fill;
+  ctx.fill();
+  ctx.strokeStyle = stroke;
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+  ctx.restore();
+}
+
+/* ---- Meta: Estrella NES dorada ---- */
 function drawGoal(g) {
   const bob = Math.sin(goalAnim * 3) * 6;
   const cx = g.x + g.w/2;
@@ -950,34 +971,15 @@ function drawGoal(g) {
   ctx.save();
   ctx.translate(cx, cy);
 
-  // resplandor
-  const allDone = deodorantsCollected >= items.length;
+  const allDone = cartridgesCollected >= items.length;
   const glow = ctx.createRadialGradient(0,0,5, 0,0,60);
-  glow.addColorStop(0, allDone ? 'rgba(255,215,0,0.5)' : 'rgba(255,60,60,0.4)');
-  glow.addColorStop(1, allDone ? 'rgba(255,215,0,0)' : 'rgba(255,60,60,0)');
+  glow.addColorStop(0, allDone ? 'rgba(255,235,100,0.55)' : 'rgba(255,90,90,0.45)');
+  glow.addColorStop(1, allDone ? 'rgba(255,235,100,0)' : 'rgba(255,90,90,0)');
   ctx.fillStyle = glow;
-  ctx.fillRect(-60,-60,120,120);
+  ctx.fillRect(-65,-65,130,130);
 
-  // asta
-  ctx.fillStyle = '#ffd700';
-  ctx.strokeStyle = '#b8860b';
-  ctx.lineWidth = 2;
-  ctx.fillRect(-4, -10, 8, 40);
-  ctx.strokeRect(-4, -10, 8, 40);
-
-  // cabeza de llave (una U con diente)
-  ctx.beginPath();
-  ctx.arc(0, -16, 16, 0, Math.PI*2);
-  ctx.fill(); ctx.stroke();
-  ctx.fillStyle = '#5ec6e8'; // hueco del cielo
-  ctx.beginPath();
-  ctx.arc(0, -16, 8, 0, Math.PI*2);
-  ctx.fill();
-
-  // diente
-  ctx.fillStyle = '#ffd700';
-  ctx.fillRect(-4, 28, 8, 10);
-  ctx.fillRect(-12, 30, 8, 6);
+  // estrella de 5 puntas dorada (tamaño NES)
+  drawStar(0, -6, 22, 12, 5, '#ffd700', '#b8860b');
 
   ctx.restore();
 
@@ -1146,6 +1148,38 @@ function drawPlayer(p) {
   ctx.restore();
 }
 
+/* ---- Items: cartucho NES dibujado con canvas ---- */
+function drawCartridge(it) {
+  const cx = it.x + it.w / 2;
+  const cy = it.y + it.h / 2 + Math.sin(it.t) * 2.5;
+
+  ctx.save();
+  ctx.translate(cx, cy);
+
+  // cuerpo principal
+  ctx.fillStyle = '#2b2b2b';
+  ctx.fillRect(-11, -9, 22, 18);
+
+  // etiqueta superior roja
+  ctx.fillStyle = '#d62828';
+  ctx.fillRect(-10, -9, 20, 6);
+
+  // cinta dorada NES
+  ctx.fillStyle = '#ffd700';
+  ctx.fillRect(-10, 2, 20, 3);
+
+  // borde blanco sutil
+  ctx.strokeStyle = '#f1faee';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(-11, -9, 22, 18);
+
+  // brillo
+  ctx.fillStyle = 'rgba(255,255,255,0.18)';
+  ctx.fillRect(-10, -7, 6, 13);
+
+  ctx.restore();
+}
+
 /* ---- Partículas ---- */
 function drawParticle(p) {
   const a = Math.max(0, p.life / p.max);
@@ -1180,7 +1214,7 @@ requestAnimationFrame(loop);
    12. HUD y pantallas
 ---------------------------------------------------------- */
 function updateHud() {
-  el.bananas.textContent = deodorantsCollected;
+  el.bananas.textContent = cartridgesCollected;
   el.lives.textContent = lives;
 }
 function showOverlay(name) {
@@ -1210,7 +1244,7 @@ function loadLevel(idx) {
   items = level.items;
   particles = [];
   camera = { x: 0, y: 0 };
-  deodorantsCollected = 0;
+  cartridgesCollected = 0;
   elapsed = 0;
   levelStartTime = performance.now();
   jumpBuffer = 0; coyoteTimer = 0;
@@ -1240,7 +1274,7 @@ function resumeGame() {
 function gameOver() {
   state = STATE.OVER;
   if (window.JMSound) { JMSound.stopMusic(); JMSound.sfx.death(); }
-  el.goBananas.textContent = deodorantsCollected;
+  el.goBananas.textContent = cartridgesCollected;
   el.goTime.textContent = totalElapsed.toFixed(1);
   el.hud.classList.add('hidden');
   el.touch.classList.add('hidden');
@@ -1254,16 +1288,16 @@ function winGame() {
   if (currentLevel >= LEVELS.length - 1) {
     state = STATE.WIN;
     if (window.JMSound) { JMSound.stopMusic(); JMSound.sfx.victory(); }
-    el.vcBananas.textContent = deodorantsCollected;
+    el.vcBananas.textContent = cartridgesCollected;
     el.vcTotal.textContent = items.length;
     el.vcTime.textContent = totalElapsed.toFixed(1);
     el.hud.classList.add('hidden');
     el.touch.classList.add('hidden');
-    // récord: menor tiempo total con todos los desodorantes
+    // récord: menor tiempo total con todos los cartuchos NES
     const isRecord = totalElapsed < record;
     if (isRecord) {
       record = totalElapsed;
-      localStorage.setItem('juanmono_record', String(record));
+      localStorage.setItem('reygorila_record', String(record));
       el.newRecord.classList.remove('hidden');
     } else {
       el.newRecord.classList.add('hidden');
@@ -1276,7 +1310,7 @@ function winGame() {
     state = STATE.LEVELEDONE;
     el.ldLevel.textContent = `Nivel ${currentLevel + 1}`;
     el.ldName.textContent = level.name;
-    el.ldBananas.textContent = deodorantsCollected;
+    el.ldBananas.textContent = cartridgesCollected;
     el.ldTotal.textContent = items.length;
     el.ldTime.textContent = elapsed.toFixed(1);
     el.hud.classList.add('hidden');
@@ -1301,7 +1335,6 @@ function backToMenu() {
 function updateRecordDisplay() {
   el.record.textContent = (record === Infinity) ? '—' : record.toFixed(1) + 's';
 }
-
 /* ----------------------------------------------------------
    14. Entrada (teclado + táctil)
 ---------------------------------------------------------- */
