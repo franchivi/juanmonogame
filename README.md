@@ -1,7 +1,7 @@
 # Rey Gorila Colector 🐒👑
 
 Recolecta **todos los cartuchos NES** de cada nivel y llega a la **Estrella NES dorada** para avanzar. ¡Cuidado con los barriles rodantes y las caídas!
-Un chapero con cara de mono recolecta desodorantes por su taller.
+Un gorila con gorro de mecánico recoge cartuchos NES por la jungla.
 
 Homenaje a un compañero de trabajo.
 
@@ -16,7 +16,7 @@ Abre `index.html` en cualquier navegador moderno.
 - **Móvil**: botones táctiles en pantalla
 
 ### Objetivo
-Recolecta **todos los desodorantes** de cada nivel y llega a la llave inglesa dorada para avanzar. ¡Cuidado con los barriles!
+Recupera todos los **cartuchos NES** de cada nivel y llega a la **Estrella NES dorada** para avanzar.
 
 ## 🛠️ Tecnología
 - HTML5 Canvas + JavaScript (sin dependencias)

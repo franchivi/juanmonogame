@@ -997,7 +997,7 @@ function drawGoal(g) {
   ctx.restore();
 }
 
-/* ---- El protagonista: JUAN MONO ---- */
+/* ---- El protagonista: REY GORILA ---- */
 function drawPlayer(p) {
   // Parpadeo por invulnerabilidad
   if (p.invuln > 0 && Math.floor(p.invuln * 16) % 2 === 0) return;
@@ -1012,138 +1012,128 @@ function drawPlayer(p) {
   ctx.translate(cx, baseY);
   ctx.scale(p.facing * sx, sy);
 
-  const W = p.w;   // 38
-  const H = p.h;   // 52
+  const W = p.w;   // 44
+  const H = p.h;   // 54
   // Origen: pies en (0,0), cuerpo hacia arriba (negativo)
   const top    = -H;
   const headY  = -H + 16;   // centro de la cabeza
   const bodyTop= -H + 26;
 
   // Sombra
-  ctx.fillStyle = 'rgba(0,0,0,0.25)';
+  ctx.fillStyle = 'rgba(0,0,0,0.3)';
   ctx.beginPath();
-  ctx.ellipse(0, 0, W*0.5, 4, 0, 0, Math.PI*2);
+  ctx.ellipse(0, 0, W*0.55, 5, 0, 0, Math.PI*2);
   ctx.fill();
 
-  // === PIERNAS (overoles azul de chapero) ===
+  // === PIERNAS y PIES tipo DK: robustos ===
   const legSwing = Math.sin(p.walkTime) * 6;
   const legSwing2 = Math.sin(p.walkTime + Math.PI) * 6;
-  ctx.fillStyle = '#2c5fa8'; // azul overol
-  // pierna izquierda
-  ctx.fillRect(-12, -14, 9, 14 + (p.onGround ? legSwing*0.5 : 0));
-  // pierna derecha
-  ctx.fillRect(3, -14, 9, 14 + (p.onGround ? legSwing2*0.5 : 0));
-  // zapatos negros de trabajo
+  ctx.fillStyle = '#1f1208'; // pelaje oscuro piernas
+  // pierna izq
+  ctx.fillRect(-14, -16, 11, 16 + (p.onGround ? legSwing*0.5 : 0));
+  // pierna der
+  ctx.fillRect(3, -16, 11, 16 + (p.onGround ? legSwing2*0.5 : 0));
+  // pies grandes
   ctx.fillStyle = '#1a1a1a';
-  ctx.fillRect(-14, -4 + (p.onGround ? legSwing*0.5 : 0), 12, 5);
-  ctx.fillRect(2, -4 + (p.onGround ? legSwing2*0.5 : 0), 12, 5);
+  ctx.fillRect(-17, -3 + (p.onGround ? legSwing*0.5 : 0), 14, 6);
+  ctx.fillRect(3, -3 + (p.onGround ? legSwing2*0.5 : 0), 14, 6);
 
-  // === CUERPO (overol azul con peto) ===
-  ctx.fillStyle = '#2c5fa8';
+  // === CUERPO más ancho y musculoso ===
+  ctx.fillStyle = '#7a4f2a'; // pelaje torso DK
   ctx.beginPath();
-  ctx.roundRect(-15, bodyTop, 30, 24, 6);
+  ctx.roundRect(-18, bodyTop, 36, 26, 7);
   ctx.fill();
-  // peto del overol (parte superior más clara)
-  ctx.fillStyle = '#3a73c4';
+
+  // peto/pecho más claro
+  ctx.fillStyle = '#9e6b3e';
   ctx.beginPath();
-  ctx.roundRect(-13, bodyTop, 26, 10, 4);
+  ctx.roundRect(-15, bodyTop, 30, 12, 5);
   ctx.fill();
-  // bolsillo con borde
-  ctx.strokeStyle = '#1d3f6e';
+
+  // === CORBATA ROJA corta de DK ===
+  ctx.fillStyle = '#d11a1a';
+  ctx.beginPath();
+  ctx.moveTo(-3, bodyTop + 2);
+  ctx.lineTo(3, bodyTop + 2);
+  ctx.lineTo(0, bodyTop + 12);
+  ctx.closePath();
+  ctx.fill();
+
+  // bolsillo grande
+  ctx.strokeStyle = '#5a3820';
   ctx.lineWidth = 1.5;
-  ctx.strokeRect(-8, bodyTop+12, 16, 8);
+  ctx.strokeRect(-9, bodyTop+14, 18, 9);
 
-  // tirantes del overol
-  ctx.fillStyle = '#2c5fa8';
-  ctx.fillRect(-12, bodyTop-2, 4, 6);
-  ctx.fillRect(8, bodyTop-2, 4, 6);
-  // botones del overol
-  ctx.fillStyle = '#ffd700';
-  ctx.beginPath(); ctx.arc(-10, bodyTop+2, 1.8, 0, Math.PI*2); ctx.fill();
-  ctx.beginPath(); ctx.arc(10, bodyTop+2, 1.8, 0, Math.PI*2); ctx.fill();
-
-  // mancha de grasa en el overol
-  ctx.fillStyle = 'rgba(40,30,20,0.45)';
-  ctx.beginPath(); ctx.arc(6, bodyTop+14, 3, 0, Math.PI*2); ctx.fill();
-  ctx.beginPath(); ctx.arc(-4, bodyTop+18, 2, 0, Math.PI*2); ctx.fill();
-
-  // === BRAZOS (peludo, color mono) ===
-  ctx.fillStyle = '#7a4f2a'; // pelaje marrón
+  // === BRAZOS: peludos y más gruesos ===
+  ctx.fillStyle = '#7a4f2a';
   const armSwing = p.onGround ? Math.sin(p.walkTime + Math.PI/2) * 5 : 0;
-  // brazo trasero (más oscuro)
+  // brazo trasero
   ctx.fillStyle = '#5e3b20';
-  ctx.fillRect(-17, bodyTop+2, 6, 16);
+  ctx.fillRect(-21, bodyTop+2, 8, 17);
   // brazo delantero
   ctx.fillStyle = '#7a4f2a';
   ctx.save();
-  ctx.translate(13, bodyTop+3);
+  ctx.translate(18, bodyTop+3);
   ctx.rotate(armSwing * 0.05);
-  ctx.fillRect(-3, 0, 6, 16);
-  // mano de mono
-  ctx.fillStyle = '#6b4423';
-  ctx.beginPath(); ctx.arc(0, 16, 4, 0, Math.PI*2); ctx.fill();
+  ctx.fillRect(-4, 0, 8, 17);
+  // mano grande
+  ctx.fillStyle = '#5e3b20';
+  ctx.beginPath(); ctx.arc(0, 18, 5, 0, Math.PI*2); ctx.fill();
   ctx.restore();
 
-  // === CABEZA (cara de mono) ===
-  // cara interior más clara (hocico)
+  // === CABEZA: cara ancha y hocico marcado estilo DK ===
+  // cara / hocico
   ctx.fillStyle = '#d9a066';
   ctx.beginPath();
-  ctx.ellipse(0, headY+4, 9, 7, 0, 0, Math.PI*2);
+  ctx.ellipse(0, headY+5, 11, 9, 0, 0, Math.PI*2);
   ctx.fill();
-  // pelaje de la cabeza
+  // cabeza peluda
   ctx.fillStyle = '#7a4f2a';
   ctx.beginPath();
-  ctx.arc(0, headY, 13, 0, Math.PI*2);
+  ctx.ellipse(0, headY-1, 14, 13, 0, 0, Math.PI*2);
   ctx.fill();
-  // pelito en la coronilla
+  // cresta/pelillo superior
+  ctx.fillStyle = '#6a4020';
   ctx.beginPath();
-  ctx.arc(-3, headY-11, 3, 0, Math.PI*2);
-  ctx.arc(2, headY-12, 3, 0, Math.PI*2);
-  ctx.arc(6, headY-10, 2.5, 0, Math.PI*2);
+  ctx.ellipse(-2, headY-11, 5, 4, -0.2, 0, Math.PI*2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.ellipse(4, headY-12, 5, 4, 0.2, 0, Math.PI*2);
   ctx.fill();
 
-  // orejas de mono
+  // orejas más redondeadas
   ctx.fillStyle = '#7a4f2a';
-  ctx.beginPath(); ctx.arc(-12, headY-1, 5, 0, Math.PI*2); ctx.fill();
-  ctx.beginPath(); ctx.arc(12, headY-1, 5, 0, Math.PI*2); ctx.fill();
-  ctx.fillStyle = '#d9a066'; // interior orejas
-  ctx.beginPath(); ctx.arc(-12, headY-1, 2.5, 0, Math.PI*2); ctx.fill();
-  ctx.beginPath(); ctx.arc(12, headY-1, 2.5, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(-14, headY-2, 6, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(14, headY-2, 6, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#d9a066';
+  ctx.beginPath(); ctx.arc(-14, headY-2, 3, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(14, headY-2, 3, 0, Math.PI*2); ctx.fill();
+
+  // cejas/pómulos marcados
+  ctx.fillStyle = '#6a4020';
+  ctx.beginPath(); ctx.arc(-5, headY-5, 3.2, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(5, headY-5, 3.2, 0, Math.PI*2); ctx.fill();
 
   // ojos
   const blink = (Math.sin(p.blink * 1.3) > 0.97) ? 0.3 : 1;
   ctx.fillStyle = '#fff';
-  ctx.beginPath(); ctx.ellipse(-4, headY-1, 3, 3*blink, 0, 0, Math.PI*2); ctx.fill();
-  ctx.beginPath(); ctx.ellipse(4, headY-1, 3, 3*blink, 0, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(-5, headY-2, 3.5, 3.5*blink, 0, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(5, headY-2, 3.5, 3.5*blink, 0, 0, Math.PI*2); ctx.fill();
   ctx.fillStyle = '#1a1a1a';
-  ctx.beginPath(); ctx.arc(-4 + (p.facing>0?0.5:0), headY-1, 1.6, 0, Math.PI*2); ctx.fill();
-  ctx.beginPath(); ctx.arc(4 + (p.facing>0?0.5:0), headY-1, 1.6, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(-5 + (p.facing>0?0.5:0), headY-2, 1.7, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(5 + (p.facing>0?0.5:0), headY-2, 1.7, 0, Math.PI*2); ctx.fill();
 
-  // nariz (fosas)
-  ctx.fillStyle = '#3a2412';
-  ctx.fillRect(-1.5, headY+3, 1.5, 2);
-  ctx.fillRect(0.5, headY+3, 1.5, 2);
+  // fosas nasales
+  ctx.fillStyle = '#2a1508';
+  ctx.beginPath(); ctx.arc(-2, headY+5, 1.8, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(2, headY+5, 1.8, 0, Math.PI*2); ctx.fill();
 
-  // boca (sonrisa)
-  ctx.strokeStyle = '#3a2412';
+  // boca (sonrisa más ancha)
+  ctx.strokeStyle = '#2a1508';
   ctx.lineWidth = 1.5;
   ctx.beginPath();
-  ctx.arc(0, headY+6, 3, 0.2, Math.PI - 0.2);
+  ctx.arc(0, headY+9, 4, 0.25, Math.PI - 0.25);
   ctx.stroke();
-
-  // === GORRA DE CHAPERO (opcional, detrás de la frente) ===
-  ctx.fillStyle = '#cc2222';
-  ctx.beginPath();
-  ctx.arc(0, headY-6, 12, Math.PI, Math.PI*2);
-  ctx.fill();
-  // visera
-  ctx.fillStyle = '#a01818';
-  ctx.beginPath();
-  ctx.ellipse(6, headY-4, 9, 3, 0, 0, Math.PI*2);
-  ctx.fill();
-  // logo (llave) en la gorra
-  ctx.fillStyle = '#ffd700';
-  ctx.beginPath(); ctx.arc(0, headY-9, 2, 0, Math.PI*2); ctx.fill();
 
   ctx.restore();
 }
